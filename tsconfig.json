@@ -1,0 +1,13 @@
+{
+  "compilerOptions": {
+    "moduleResolution": "node",
+    "target": "es6",
+    "outDir": "dist",
+    "typeRoots": ["node_modules/@types"],
+    "rootDirs": ["src"],
+    "esModuleInterop": true,
+    "allowSyntheticDefaultImports": true,
+  },
+  "include": ["src"],
+  "exclude": ["dist", "node_modules"]
+}
