@@ -1,20 +1,25 @@
-import { Router } from 'express';
+import { Router, Request, Response } from 'express';
 import CustomerService from '../services/customerService';
 
 export default class CustomerController {
 	private service: CustomerService;
-  	public readonly router: Router;
 
 	constructor(service: CustomerService){
 		this.service = service;
-		this.router = Router();
-
-		this.router.post('/', this.create);
 	}
 
-	private async create (req, res) {
+	async create (req: Request, res: Response) {
 		const newCustomer = req.body;
-		const customer = await this.service.create(newCustomer);
-		res.json(customer);
+		this.service.create(newCustomer)
+		.then(customer => {
+			if(customer) {
+				res.status(201).json({ msg: 'Customer created' });
+			}else{
+				res.status(400).json({ msg: 'Customer NOT created' });
+			}
+		})
+		.catch(error => {
+			res.status(400).json({ msg: String(error) });
+		});
 	};
 }

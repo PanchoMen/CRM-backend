@@ -7,6 +7,8 @@
     "rootDirs": ["src"],
     "esModuleInterop": true,
     "allowSyntheticDefaultImports": true,
+    "strict": true,
+    "isolatedModules": true
   },
   "include": ["src"],
   "exclude": ["dist", "node_modules"]

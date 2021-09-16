@@ -1,9 +1,9 @@
 import express from 'express';
 import morgan from 'morgan';
-import { DB } from './utils/database';
+import { DB , dbConfig} from './utils/database';
 import { Env } from './utils/environment';
 import UserRoutes from './api/v1/routes/userRoutes';
-import CustomerRoutes from './api/v1/routes/CustomerRoutes';
+import CustomerRoutes from './api/v1/routes/customerRoutes';
 
 const env = new Env();
 env.loadEnvironment();
@@ -20,16 +20,16 @@ app.use(express.json());
 
 app.use('/static', express.static('/public'));
 
-app.use('/v1/user', v1_user.getRouter());
-app.use('/v1/customer', v1_customer.getRouter());
+app.use('/api/v1/user', v1_user.getRouter());
+app.use('/api/v1/customer', v1_customer.getRouter());
 
-const dbConfig = {
+const config: dbConfig = {
     URI: process.env.DB_URI,
     USER: process.env.DB_USER,
     PASSWORD: process.env.DB_PASSWORD
 };
 
-const db = new DB(dbConfig);
+const db = new DB(config);
 
 db.connect()
 .then(() => {

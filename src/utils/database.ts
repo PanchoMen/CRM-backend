@@ -2,9 +2,9 @@ import mongoose from 'mongoose';
 import { Db } from 'mongodb';
 
 interface dbConfig {
-  URI: string,
-  USER: string;
-  PASSWORD: string,
+  URI: string | undefined,
+  USER: string | undefined;
+  PASSWORD: string | undefined,
 }
 
 class DB {
@@ -28,7 +28,7 @@ class DB {
         console.error('DB error: ', err);
       });
 
-      connection.once('open', function () {
+      connection.once('open',  () => {
         this.database = connection.db;
         console.log('Connection to DB successfull');
       });
@@ -51,4 +51,5 @@ class DB {
   }
 }
 
-export {dbConfig, DB};
+export { DB };
+export type { dbConfig };

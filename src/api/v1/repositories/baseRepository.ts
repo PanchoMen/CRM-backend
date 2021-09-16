@@ -28,7 +28,7 @@ export default class BaseRepository<T extends Document> {
 		});
   	}
 
-	async findAll(limit: number = 10): Promise<T[]> {
+	async findAll(limit: number = 0): Promise<T[]> {
 		return new Promise((resolve, reject) => {
 		this.model
 			.find()
@@ -38,7 +38,7 @@ export default class BaseRepository<T extends Document> {
 		});
 	}
 
-	async findOne(query: FilterQuery<T>): Promise<T> {
+	async findOne(query: FilterQuery<T>): Promise<T | null> {
 		return new Promise((resolve, reject) => {
 		this.model
 			.findOne(query)
@@ -47,7 +47,7 @@ export default class BaseRepository<T extends Document> {
 		});
 	}
 
-	async findById(id: string): Promise<T> {
+	async findById(id: string): Promise<T | null> {
 		return new Promise((resolve, reject) => {
 		this.model
 			.findOne(this.toObjectIdFilter(id))

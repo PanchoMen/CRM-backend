@@ -10,7 +10,9 @@ export default class UserRoutes {
 		const repository = new UserRepository();
 		const service = new UserService(repository);
 		const controller = new UserController(service);
-		this.router = controller.router;
+		this.router = Router();
+
+		this.router.post('/', controller.create.bind(controller));
 	}
 
 	public getRouter(){

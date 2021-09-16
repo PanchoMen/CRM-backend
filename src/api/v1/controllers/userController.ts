@@ -1,20 +1,25 @@
-import { Router } from 'express';
+import { Router, Request, Response } from 'express';
 import UserService from '../services/userService';
 
 export default class UserController {
 	private service: UserService;
-  	public readonly router: Router;
 
 	constructor(service: UserService){
 		this.service = service;
-		this.router = Router();
-
-		this.router.post('/', this.create);
 	}
 
-	private async create (req, res) {
+	create (req: Request, res: Response) {
 		const newUser = req.body;
-		const user = await this.service.create(newUser);
-		res.json(user);
+		this.service.create(newUser)
+		.then(user => {
+			if(user) {
+				res.status(201).json({ msg: 'User created' });
+			}else{
+				res.status(400).json({ msg: 'User NOT created' });
+			}
+		})
+		.catch(error => {
+			res.status(400).json({ msg: String(error) });
+		});
 	};
 }
