@@ -20,8 +20,8 @@ app.use(express.json());
 
 app.use('/static', express.static('/public'));
 
-app.use('/api/v1/user', v1_user.getRouter());
-app.use('/api/v1/customer', v1_customer.getRouter());
+app.use('/api/v1/users', v1_user.getRouter());
+app.use('/api/v1/customers', v1_customer.getRouter());
 
 const config: dbConfig = {
     URI: process.env.DB_URI,

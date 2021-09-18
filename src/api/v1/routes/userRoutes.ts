@@ -12,7 +12,13 @@ export default class UserRoutes {
 		const controller = new UserController(service);
 		this.router = Router();
 
-		this.router.post('/', controller.create.bind(controller));
+		this.router.post('/', (req, res) => controller.create(req, res));
+		this.router.post('/login', (req, res) => controller.login(req, res));
+		this.router.get('/list', (req, res) => controller.list(req, res));
+		this.router.get('/:user-id', (req, res) => controller.list(req, res));
+		this.router.put('/:user-id', (req, res) => controller.list(req, res));
+		this.router.put('/:user-id/admin-status', (req, res) => controller.changeRole(req, res));
+		this.router.delete('/:user-id', (req, res) => controller.list(req, res));
 	}
 
 	public getRouter(){

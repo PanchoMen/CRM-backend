@@ -12,7 +12,11 @@ export default class CustomerRoutes {
 		const controller = new CustomerController(service);
 		this.router = Router();
 		
-		this.router.post('/', controller.create.bind(controller));
+		this.router.post('/', (req, res) => controller.create(req, res));
+		this.router.get('/list', (req, res) => controller.list(req, res));
+		this.router.get('/:customer-id', (req, res) => controller.getByID(req, res));
+		this.router.put('/:customer-id', (req, res) => controller.update(req, res));
+		this.router.delete('/:customer-id', (req, res) => controller.delete(req, res));
 	}
 
 	public getRouter(){
