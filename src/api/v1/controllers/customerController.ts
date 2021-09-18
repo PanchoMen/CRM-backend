@@ -1,4 +1,4 @@
-import { Router, Request, Response } from 'express';
+import { Request, Response } from 'express';
 import CustomerService from '../services/customerService';
 
 export default class CustomerController {
@@ -8,7 +8,7 @@ export default class CustomerController {
 		this.service = service;
 	}
 
-	async create (req: Request, res: Response) {
+	create (req: Request, res: Response) {
 		const newCustomer = req.body;
 		this.service.create(newCustomer)
 		.then(customer => {
@@ -22,4 +22,48 @@ export default class CustomerController {
 			res.status(400).json({ msg: String(error) });
 		});
 	};
+
+	list (req: Request, res: Response) {
+		this.service.listAll()
+		.then(customers => {
+			res.status(200).json(customers);
+		})
+		.catch(error => {
+			res.status(400).json({ msg: String(error) });
+		});
+	}
+
+	getByID (req: Request, res: Response) {
+		const id = req.params.id;
+		this.service.getById(id)
+		.then(customer => {
+			res.status(200).json(customer);
+		})
+		.catch(error => {
+			res.status(400).json({ msg: String(error) });
+		});
+	}
+
+	update (req: Request, res: Response) {
+		const id = req.params.id;
+		const user = req.body;
+		this.service.update(id, user)
+		.then(customer => {
+			res.status(200).json(customer);
+		})
+		.catch(error => {
+			res.status(400).json({ msg: String(error) });
+		});
+	}
+
+	delete (req: Request, res: Response) {
+		const id = req.params.id;
+		this.service.delete(id)
+		.then(customer => {
+			res.status(200).json(customer);
+		})
+		.catch(error => {
+			res.status(400).json({ msg: String(error) });
+		});
+	}
 }
