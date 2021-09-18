@@ -9,17 +9,24 @@ export default class CustomerService {
   	}
 
 	async create(customer: ICustomer){
-		return new Promise((resolve, reject) => {
-			this.repository.create(customer)
-			.then(result => resolve(result))
-			.catch(err => reject(err));
-		});
+		return await this.repository.create(customer);
 	}
-/*
-	async listCustomers() {
-		return new Promise((resolve, reject) => {
-			this.repository.findAll()
-		}
+
+	async listAll(){
+		return await this.repository.findAll();
 	}
-	*/
+
+	async getById(id: string){
+		return await this.repository.findById(id);
+	}
+
+	async update(id: string, newUser: ICustomer) {
+		let savedUser = await this.repository.findById(id)
+		savedUser = Object.assign(savedUser, newUser);
+		return await this.repository.save(savedUser);
+	}
+
+	async delete(id: string) {
+		return await this.repository.deleteById(id);
+	}
 }
