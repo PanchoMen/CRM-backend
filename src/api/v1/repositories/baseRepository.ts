@@ -1,4 +1,4 @@
-import { Document, Model, FilterQuery } from "mongoose";
+import { Document, Model, FilterQuery, UpdateQuery } from "mongoose";
 import { ObjectId, OptionalId } from "mongodb";
 
 export default class BaseRepository<T extends Document> {
@@ -13,46 +13,26 @@ export default class BaseRepository<T extends Document> {
 	}
 
 	async create(model: OptionalId<T>) {
-		return new Promise((resolve, reject) => {
-			this.model.create(model)
-			.then(result => resolve(result))
-			.catch(err => reject(err));
-		});
+		return await this.model.create(model);
   	}
 
 	async deleteById(id: string) {
-		return new Promise((resolve, reject) => {
-			this.model.deleteOne(this.toObjectIdFilter(id))
-			.then(result => resolve(result))
-			.catch(err => reject(err));
-		});
+		return await this.model.deleteOne(this.toObjectIdFilter(id));
   	}
 
-	async findAll(limit: number = 0): Promise<T[]> {
-		return new Promise((resolve, reject) => {
-		this.model
-			.find()
-			.limit(limit)
-			.then(result => resolve(result))
-			.catch(err => reject(err));
-		});
+	async findAll(limit: number = 0) {
+		return await this.model.find().limit(limit);
 	}
 
-	async findOne(query: FilterQuery<T>): Promise<T | null> {
-		return new Promise((resolve, reject) => {
-		this.model
-			.findOne(query)
-			.then(result => resolve(result))
-			.catch(err => reject(err));
-		});
+	async findOne(query: FilterQuery<T>) {
+		return await this.model.findOne(query)
 	}
 
-	async findById(id: string): Promise<T | null> {
-		return new Promise((resolve, reject) => {
-		this.model
-			.findOne(this.toObjectIdFilter(id))
-			.then(result => resolve(result))
-			.catch(err => reject(err));
-		});
+	async findById(id: string) {
+		return await this.model.findOne(this.toObjectIdFilter(id));
+	}
+
+	async save(model: OptionalId<T>) {
+		return await model.save();
 	}
 }

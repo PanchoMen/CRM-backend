@@ -9,7 +9,7 @@ const UserSchema: Schema = new Schema<IUser>({
   email: { type: String, required: true, unique: true },
   password: { type: String, required: true },
   lastLogin: { type: Date },
-  rol: { type: String, enum: Role, default: Role.User, required: true },
+  role: { type: String, enum: Role, default: Role.User, required: true },
   created: { type: Date, default: new Date() },
   lastModified: { type: Date }, //default: Date.now() },
 });

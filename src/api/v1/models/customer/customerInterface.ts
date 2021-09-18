@@ -10,6 +10,6 @@ export default interface ICustomer extends Document {
 	name: string;
   	surname: string;
 	photo_field?: string;
-	created?: { user_id: String, date: Date };
-  	lastModified?: { user_id: String, date: Date };
+	created?: { user_id: string, date: Date };
+  	lastModified?: { user_id: string, date: Date };
 }
