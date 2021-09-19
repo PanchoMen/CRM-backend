@@ -1,5 +1,5 @@
 import { Request, Response } from 'express';
-import { verify } from "jsonwebtoken";
+import { JwtPayload, verify } from "jsonwebtoken";
 import { Role } from '../../api/v1/models/user/role';
 import IUser from '../../api/v1/models/user/userInterface';
 import UserService from '../../api/v1/services/userService';
@@ -51,10 +51,6 @@ export default class AuthenticationMiddleware{
 
 	private getDecodedToken(token: string) {
 		const secret = process.env.JWT_SECRET || 'secret';
-		const decoded = verify(token, secret);
-		if(typeof(decoded) !== 'string'){
-			return decoded;
-		}
-		return null;
+		try {
 	}
 }

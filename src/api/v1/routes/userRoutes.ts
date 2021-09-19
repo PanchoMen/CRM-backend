@@ -19,10 +19,10 @@ export default class UserRoutes {
 
 		this.router.post('/', (req, res) => controller.create(req, res));
 		this.router.get('/list', (req, res) => controller.list(req, res));
-		this.router.get('/:user-id', (req, res) => controller.get(req, res));
-		this.router.put('/:user-id', (req, res) => controller.update(req, res));
-		this.router.put('/:user-id/admin-status', (req, res) => controller.changeRole(req, res));
-		this.router.delete('/:user-id', (req, res) => controller.delete(req, res));
+		this.router.get('/:id', (req, res) => controller.get(req, res));
+		this.router.put('/:id', (req, res) => controller.update(req, res));
+		this.router.put('/:id/role', (req, res) => controller.changeRole(req, res));
+		this.router.delete('/:id', (req, res) => controller.delete(req, res));
 	}
 
 	public getRouter(){
