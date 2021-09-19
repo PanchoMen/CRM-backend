@@ -1,5 +1,6 @@
 import { Request, Response } from 'express';
 import { JwtPayload, verify } from "jsonwebtoken";
+import ApiResponse from '../../api/v1/controllers/apiResponse';
 import { Role } from '../../api/v1/models/user/role';
 import IUser from '../../api/v1/models/user/userInterface';
 import UserService from '../../api/v1/services/userService';
@@ -21,14 +22,14 @@ export default class AuthenticationMiddleware{
 				return next();
 			}
 		}
-		res.status(403).json('Bad credentials');
+		return res.status(403).json(new ApiResponse(false, 'Bad credentials'));
 	}
 
 	async verifyRole(req: Request, res: Response, next: Function, role: Role = Role.User) {
 		if(res.locals.user.role === role) {
 			return next();
 		}
-		res.status(403).json('Insufficient permissions');
+		return res.status(403).json(new ApiResponse(false, 'Insufficient permissions'));
 	}
 
 	private getTokenFromHeader(req: Request): string | null {
@@ -52,5 +53,9 @@ export default class AuthenticationMiddleware{
 	private getDecodedToken(token: string) {
 		const secret = process.env.JWT_SECRET || 'secret';
 		try {
+			return verify(token, secret)  as JwtPayload;
+		} catch (err) {
+			return null;
+		}
 	}
 }

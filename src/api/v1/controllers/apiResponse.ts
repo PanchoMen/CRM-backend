@@ -1,10 +1,10 @@
 export default class ApiResponse {
-	private status: boolean;
+	private result: boolean;
 	private data?: any;
 	private message?: string;
 
-	constructor(status: boolean, message?: string, data?: any){
-		this.status = status;
+	constructor(result: boolean, message?: string, data?: any){
+		this.result = result;
 		this.data = data;
 		this.message = message;
 	}
