@@ -1,5 +1,4 @@
 import { Request, Response } from 'express';
-import { token } from 'morgan';
 import UserService from '../services/userService';
 
 export default class UserController {
@@ -24,6 +23,17 @@ export default class UserController {
 		});
 	};
 
+	get (req: Request, res: Response) {
+		const userId = req.params.id;
+		this.service.getById(userId)
+		.then(user => {
+			res.status(200).json(user);
+		})
+		.catch(error => {
+			res.status(400).json(String(error));
+		});
+	}
+
 	list (req: Request, res: Response) {
 		this.service.listAll()
 		.then(users => {
@@ -35,9 +45,11 @@ export default class UserController {
 	}
 
 	update (req: Request, res: Response) {
-		this.service.listAll()
-		.then(users => {
-			res.status(200).json(users);
+		let userId = req.params.id;
+		let changes = req.body;
+		this.service.update(userId, changes)
+		.then(result => {
+			res.status(200).json(result);
 		})
 		.catch(error => {
 			res.status(400).json(String(error));

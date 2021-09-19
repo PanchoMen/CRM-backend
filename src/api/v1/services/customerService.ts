@@ -1,4 +1,4 @@
-import ICustomer from '../models/customer/customerInterface';
+import ICustomer, { IPartialCustomer } from '../models/customer/customerInterface';
 import CustomerRepository from '../repositories/customerRepository';
 
 export default class CustomerService {
@@ -8,7 +8,8 @@ export default class CustomerService {
     	this.repository = repository;
   	}
 
-	async create(customer: ICustomer){
+	async create(userId: string, customer: ICustomer){
+		customer.created = { user_id: userId, date: new Date() };
 		return await this.repository.create(customer);
 	}
 
@@ -20,10 +21,11 @@ export default class CustomerService {
 		return await this.repository.findById(id);
 	}
 
-	async update(id: string, newUser: ICustomer) {
-		let savedUser = await this.repository.findById(id)
-		savedUser = Object.assign(savedUser, newUser);
-		return await this.repository.save(savedUser);
+	async update(userId: string, customerId: string, changes: IPartialCustomer) {
+		let customer = await this.repository.findById(customerId);
+		customer = Object.assign(customer, changes);
+		customer.lastModified = { user_id: userId, date: new Date() };
+		return await this.repository.save(customer);
 	}
 
 	async delete(id: string) {

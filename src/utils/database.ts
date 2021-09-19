@@ -24,13 +24,11 @@ class DB {
     mongoose.connect(url)
     .then(() => {
       const connection = mongoose.connection;
+      this.database = connection.db;
+      console.log('Connection to DB successfull');
+      
       connection.on('error', function (err) {
         console.error('DB error: ', err);
-      });
-
-      connection.once('open',  () => {
-        this.database = connection.db;
-        console.log('Connection to DB successfull');
       });
     })
     .catch(error => {

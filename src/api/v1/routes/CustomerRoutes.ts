@@ -1,16 +1,15 @@
 import { Router } from 'express';
-import CustomerRepository from '../repositories/customerRepository';
-import CustomerService from '../services/customerService';
 import CustomerController from '../controllers/customerController';
+import AuthenticationMiddleware from '../../../middlewares/authentication';
 
 export default class CustomerRoutes {
 	private readonly router : Router;
 
-	constructor(){
-		const repository = new CustomerRepository();
-		const service = new CustomerService(repository);
-		const controller = new CustomerController(service);
+	constructor(controller: CustomerController, authMiddleware: AuthenticationMiddleware){
 		this.router = Router();
+		
+		// Endpoints only for authenticated users
+		this.router.use((req, res, next) => authMiddleware.verifyAuthentication(req, res, next));
 		
 		this.router.post('/', (req, res) => controller.create(req, res));
 		this.router.get('/list', (req, res) => controller.list(req, res));

@@ -9,8 +9,9 @@ export default class CustomerController {
 	}
 
 	create (req: Request, res: Response) {
+		const userId = 'TODO';
 		const newCustomer = req.body;
-		this.service.create(newCustomer)
+		this.service.create(userId, newCustomer)
 		.then(customer => {
 			if(customer) {
 				res.status(201).json({ msg: 'Customer created' });
@@ -45,9 +46,10 @@ export default class CustomerController {
 	}
 
 	update (req: Request, res: Response) {
-		const id = req.params.id;
-		const user = req.body;
-		this.service.update(id, user)
+		const userId = 'TODO'
+		const customerId = req.params.id;
+		const changes = req.body;
+		this.service.update(userId, customerId, changes)
 		.then(customer => {
 			res.status(200).json(customer);
 		})

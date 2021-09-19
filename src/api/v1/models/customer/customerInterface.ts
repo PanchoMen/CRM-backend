@@ -1,10 +1,4 @@
 import { Document, SchemaType } from 'mongoose'
-import IUser from '../user/userInterface';
-
-export interface UserActionTimestamp extends SchemaType {
-	user: IUser,
-	date: Date
-}
 
 export default interface ICustomer extends Document {
 	name: string;
@@ -13,3 +7,5 @@ export default interface ICustomer extends Document {
 	created?: { user_id: string, date: Date };
   	lastModified?: { user_id: string, date: Date };
 }
+
+export interface IPartialCustomer extends Partial<ICustomer> {} 

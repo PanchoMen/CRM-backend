@@ -1,6 +1,5 @@
 import { Schema, model } from "mongoose";
-import userSchema from "../user/userSchema";
-import ICustomer, { UserActionTimestamp } from "./customerInterface";
+import ICustomer from "./customerInterface";
 
 const CustomerSchema: Schema = new Schema<ICustomer>({
 	name: { type: String, required: true },

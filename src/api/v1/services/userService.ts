@@ -1,4 +1,5 @@
 import bcrypt from 'bcryptjs';
+import { sign } from 'jsonwebtoken';
 import UserRepository from "../repositories/userRepository";
 import IUser from '../models/user/userInterface';
 import { Role } from '../models/user/role';
@@ -12,7 +13,9 @@ export default class UserService {
 
 	async create(user: IUser){
 		user.password = await this.encrypt(user.password);
-		return await this.repository.create(user);
+		user.created = new Date();
+		let createdUser = await this.repository.create(user);
+		return this.removeSensitiveData(createdUser);
 	}
 
 	async loginByUsername(username: string, password: string){
@@ -26,11 +29,13 @@ export default class UserService {
 	}
 
 	async listAll(){
-		return await this.repository.findAll();
+		let users = await this.repository.findAll();
+		return users.map(user => this.removeSensitiveData(user));
 	}
 
 	async getById(id: string){
-		return await this.repository.findById(id);
+		let user = await this.repository.findById(id);
+		return this.removeSensitiveData(user);
 	}
 
 	async changeRole(id: string, role: Role) {
@@ -45,6 +50,7 @@ export default class UserService {
 	async update(id: string, newUser: IUser) {
 		let savedUser = await this.repository.findById(id);
 		savedUser = Object.assign(savedUser, newUser);
+		savedUser.lastModified = new Date();
 		return await this.repository.save(savedUser);
 	}
 
@@ -53,13 +59,25 @@ export default class UserService {
 	}
 
 	private async login(user: IUser | null, password: string){
-		if(user){
-			const result = await this.compareEncrypted(user.password, password);
-			if(result) {
-				return true;
+		if(user && await this.compareEncrypted(user.password, password)){
+			const token = this.generateToken(user);
+			if(token){
+				return token;
 			}
 		}
 		throw new Error('Bad Credentials');
+	}
+
+	private removeSensitiveData(user: Partial<IUser> | null) {
+		if(user) {
+			user.password = undefined;
+		}
+		return user;
+	}
+
+	private generateToken(user: IUser) {
+		const secret = process.env.JWT_SECRET || 'secret';
+		return sign({ id: user._id, username: user.username, role: user.role}, secret, { expiresIn: '8h' });
 	}
 
 	private async compareEncrypted(encrypted: string, input: string) {

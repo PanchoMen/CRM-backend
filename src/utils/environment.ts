@@ -15,6 +15,11 @@ class Env {
 
 // CHECK ENV VARIABLES
 function checkRequiredVariables() {
+	if(process.env.JWT_SECRET == null){
+		console.log('Error: JWT_SECRET is not defined in env');
+		process.exit();
+	}
+	
 	if(process.env.DB_URI == null){
 		console.log('Error: DB_URI is not defined in env');
 		process.exit();
