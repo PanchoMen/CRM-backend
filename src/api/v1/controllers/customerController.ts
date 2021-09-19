@@ -9,7 +9,7 @@ export default class CustomerController {
 	}
 
 	create (req: Request, res: Response) {
-		const userId = 'TODO';
+		const userId = res.locals.user.id;
 		const newCustomer = req.body;
 		this.service.create(userId, newCustomer)
 		.then(customer => {
@@ -46,7 +46,7 @@ export default class CustomerController {
 	}
 
 	update (req: Request, res: Response) {
-		const userId = 'TODO'
+		const userId = res.locals.user.id;
 		const customerId = req.params.id;
 		const changes = req.body;
 		this.service.update(userId, customerId, changes)
