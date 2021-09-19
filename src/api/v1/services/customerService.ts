@@ -41,13 +41,10 @@ export default class CustomerService {
 		if(!customer){
 			throw new Error("Invalid customer");
 		}
-		console.log("Uploaded image", image.name);
 		let basePath = process.env.STATIC_PATH + this.PATH;
 		let internalPath = this.constructPath([customerId, 'photo'], basePath);
 		customer.photo_field = this.constructPath([customerId, 'photo', image.name], '/static' + this.PATH);
 		this.markModified(userId, customer);
-		console.log('PATH', customer.photo_field);
-		console.log('INTERNAL PATH', this.constructPath([image.name], internalPath));
 		this.createDirIfNotExists(internalPath);
 		await image.mv(this.constructPath([image.name], internalPath));
 		await this.repository.save(customer);
@@ -60,11 +57,8 @@ export default class CustomerService {
 
 	private createDirIfNotExists(path: string) {
 		if (!fs.existsSync(path)) {
-			console.log("El directorio no existe...");
-			console.log("Creating", path);
 			fs.mkdirSync(path, { recursive: true });
 		}
-		console.log("El directorio ya existe", path);
 	}
 
 	private markModified(userId: string, customer: ICustomer){
