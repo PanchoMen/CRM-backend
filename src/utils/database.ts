@@ -31,16 +31,16 @@ class DB {
         console.error('DB error: ', err);
       });
     })
-    .catch(error => {
-      console.error('Error connecting to DB', error);
+    .catch(err => {
+      console.error('Error connecting to DB', err);
     });
   }  
 
   async close() {
     mongoose.connection.close()
-    .catch(error => {
+    .catch(err => {
       this.database = undefined;
-      console.error('Error closing the DB', error);
+      console.error('Error closing the DB', err);
     });
   }
 

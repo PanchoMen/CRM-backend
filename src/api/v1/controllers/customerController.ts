@@ -1,6 +1,7 @@
 import { Request, Response } from 'express';
 import { UploadedFile } from 'express-fileupload';
 import CustomerService from '../services/customerService';
+import ApiResponse from './apiResponse';
 
 export default class CustomerController {
 	private service: CustomerService;
@@ -15,23 +16,23 @@ export default class CustomerController {
 		this.service.create(userId, newCustomer)
 		.then(customer => {
 			if(customer) {
-				res.status(201).json({ msg: 'Customer created' });
+				res.status(201).json(new ApiResponse(true, 'Customer created', customer));
 			}else{
-				res.status(400).json({ msg: 'Customer NOT created' });
+				res.status(400).json(new ApiResponse(false, 'Customer NOT created'));
 			}
 		})
-		.catch(error => {
-			res.status(400).json({ msg: String(error) });
+		.catch(err => {
+			res.status(400).json(new ApiResponse(false, String(err)));
 		});
 	};
 
 	list (req: Request, res: Response) {
 		this.service.listAll()
 		.then(customers => {
-			res.status(200).json(customers);
+			res.status(200).json(new ApiResponse(true, 'Succesfull', customers));
 		})
-		.catch(error => {
-			res.status(400).json({ msg: String(error) });
+		.catch(err => {
+			res.status(400).json(new ApiResponse(false, String(err)));
 		});
 	}
 
@@ -39,10 +40,10 @@ export default class CustomerController {
 		const id = req.params.id;
 		this.service.getById(id)
 		.then(customer => {
-			res.status(200).json(customer);
+			res.status(200).json(new ApiResponse(true, 'Succesfull', customer));
 		})
-		.catch(error => {
-			res.status(400).json({ msg: String(error) });
+		.catch(err => {
+			res.status(400).json(new ApiResponse(false, String(err)));
 		});
 	}
 
@@ -52,10 +53,10 @@ export default class CustomerController {
 		const changes = req.body;
 		this.service.update(userId, customerId, changes)
 		.then(customer => {
-			res.status(200).json(customer);
+			res.status(200).json(new ApiResponse(true, 'Succesfull', customer));
 		})
-		.catch(error => {
-			res.status(400).json({ msg: String(error) });
+		.catch(err => {
+			res.status(400).json(new ApiResponse(false, String(err)));
 		});
 	}
 
@@ -63,10 +64,10 @@ export default class CustomerController {
 		const id = req.params.id;
 		this.service.delete(id)
 		.then(customer => {
-			res.status(200).json(customer);
+			res.status(200).json(new ApiResponse(true, 'Succesfull', customer));
 		})
-		.catch(error => {
-			res.status(400).json({ msg: String(error) });
+		.catch(err => {
+			res.status(400).json(new ApiResponse(false, String(err)));
 		});
 	}
 
@@ -77,10 +78,10 @@ export default class CustomerController {
 			try {
 				const uploaded = await this.service.uploadImage(userId, customerId, req.files.photo as UploadedFile);
 				if(uploaded) {
-					return res.status(200).json(uploaded);
+					return res.status(200).json(new ApiResponse(true, 'Succesfull', uploaded));
 				}
 			} catch (err) {
-				return res.status(500).json({ msg: String(err) });
+				return res.status(500).json(new ApiResponse(false, String(err)));
 			}
 		}
 		res.status(400).json();
