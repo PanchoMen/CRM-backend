@@ -12,10 +12,11 @@ export default class CustomerRoutes {
 		this.router.use((req, res, next) => authMiddleware.verifyAuthentication(req, res, next));
 		
 		this.router.post('/', (req, res) => controller.create(req, res));
+		this.router.post('/:id/photo', (req, res) => controller.updloadImage(req, res));
 		this.router.get('/list', (req, res) => controller.list(req, res));
-		this.router.get('/:customer-id', (req, res) => controller.getByID(req, res));
-		this.router.put('/:customer-id', (req, res) => controller.update(req, res));
-		this.router.delete('/:customer-id', (req, res) => controller.delete(req, res));
+		this.router.get('/:id', (req, res) => controller.getByID(req, res));
+		this.router.put('/:id', (req, res) => controller.update(req, res));
+		this.router.delete('/:id', (req, res) => controller.delete(req, res));
 	}
 
 	public getRouter(){

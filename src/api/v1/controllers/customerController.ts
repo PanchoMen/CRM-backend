@@ -1,4 +1,5 @@
 import { Request, Response } from 'express';
+import { UploadedFile } from 'express-fileupload';
 import CustomerService from '../services/customerService';
 
 export default class CustomerController {
@@ -67,5 +68,21 @@ export default class CustomerController {
 		.catch(error => {
 			res.status(400).json({ msg: String(error) });
 		});
+	}
+
+	async updloadImage(req: Request, res: Response) {
+		const customerId = req.params.id;
+		const userId = res.locals.user.id;
+		if(req.files && req.files.photo) {
+			try {
+				const uploaded = await this.service.uploadImage(userId, customerId, req.files.photo as UploadedFile);
+				if(uploaded) {
+					return res.status(200).json(uploaded);
+				}
+			} catch (err) {
+				return res.status(500).json({ msg: String(err) });
+			}
+		}
+		res.status(400).json();
 	}
 }

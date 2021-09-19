@@ -38,6 +38,11 @@ function checkRequiredVariables() {
 	if(process.env.PORT == null){
 		console.log('PORT is not defined in env, using defaults');
 	}
+
+	if(process.env.STATIC_PATH == null){
+		process.env.STATIC_PATH = '/public';
+		console.log('STATIC_PATH is not defined in env, using defaults');
+	}
 }
 
 export {Env}

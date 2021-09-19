@@ -1,6 +1,7 @@
 import express from 'express';
 import morgan from 'morgan';
 import helmet from 'helmet';
+import fileUpload from 'express-fileupload';
 import { DB , dbConfig} from './utils/database';
 import { Env } from './utils/environment';
 import API_V1 from './api/v1';
@@ -15,9 +16,11 @@ app.use(morgan('combined'));
 
 app.use(helmet());
 
+app.use(fileUpload());
+
 app.use(express.json());
 
-app.use('/static', express.static('/public'));
+app.use('/static', express.static(process.env.STATIC_PATH || '/public'));
 
 const api_v1 = new API_V1('/api/v1');
 api_v1.setRoutes(app);

@@ -1,5 +1,6 @@
 # Development environment
 dist/
+public/
 
 # NPM modules
 node_modules
