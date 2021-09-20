@@ -1,6 +1,6 @@
 import fs from 'fs';
 import { UploadedFile }  from 'express-fileupload';
-import ICustomer, { IPartialCustomer } from '../models/customer/customerInterface';
+import ICustomer from '../models/customer/customerInterface';
 import CustomerRepository from '../repositories/customerRepository';
 
 export default class CustomerService {
@@ -25,11 +25,15 @@ export default class CustomerService {
 		return await this.repository.findById(id);
 	}
 
-	async update(userId: string, customerId: string, changes: IPartialCustomer) {
+	async update(userId: string, customerId: string, changes: Partial<ICustomer>) {
 		let customer = await this.repository.findById(customerId);
+		if(!customer){
+			throw new Error("Invalid customer");
+		}
 		customer = Object.assign(customer, changes);
 		this.markModified(userId, customer);
 		return await this.repository.save(customer);
+		
 	}
 
 	async delete(id: string) {

@@ -7,5 +7,3 @@ export default interface ICustomer extends Document {
 	created?: { user_id: string, date: Date };
   	lastModified?: { user_id: string, date: Date };
 }
-
-export interface IPartialCustomer extends Partial<ICustomer> {} 

@@ -39,19 +39,19 @@ export default class UserService {
 	}
 
 	async changeRole(id: string, role: Role) {
-		let savedUser = await this.repository.findById(id);
-		if(savedUser) {
-			savedUser.role = role;
-			return await savedUser.save();
+		let user = await this.repository.findById(id);
+		if(user) {
+			user.role = role;
+			return await this.repository.save(user);
 		}
 		throw new Error('User not found');
 	}
 
 	async update(id: string, newUser: IUser) {
-		let savedUser = await this.repository.findById(id);
-		savedUser = Object.assign(savedUser, newUser);
-		savedUser.lastModified = new Date();
-		return await this.repository.save(savedUser);
+		let user = await this.repository.findById(id);
+		user = Object.assign(user, newUser);
+		user.lastModified = new Date();
+		return await this.repository.save(user);
 	}
 
 	async delete(id: string) {

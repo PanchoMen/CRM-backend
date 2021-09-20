@@ -2,7 +2,7 @@ import { Document, Model, FilterQuery, UpdateQuery } from "mongoose";
 import { ObjectId, OptionalId } from "mongodb";
 
 export default class BaseRepository<T extends Document> {
-	private model: Model<T>;
+	readonly model: Model<T>;
 
 	constructor(model: Model<T>) {
 		this.model = model;
