@@ -1,10 +1,10 @@
-version: '3.7'
+version: '3.8'
 services:
   db:
     image: mongo:3.6
     container_name: mongodb
     volumes:
-      - ./mongo-data:/data/mongodb
+      - ./mongo-data:/data/db
     restart: always
     ports:
       - 27017:27017
@@ -13,7 +13,7 @@ services:
 
   backend:
     build: .
-    container_name: 'app_backend'
+    container_name: 'app'
     env_file:
       - .env
     volumes:

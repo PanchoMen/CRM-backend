@@ -19,9 +19,9 @@ class DB {
     const url = `mongodb://${this.config.USER}:${this.config.PASSWORD}@${this.config.URI}`;
     const options = {
       useUnifiedTopology: true
-    };
+    } as mongoose.ConnectOptions;
 
-    mongoose.connect(url)
+    mongoose.connect(url, options)
     .then(() => {
       const connection = mongoose.connection;
       this.database = connection.db;
